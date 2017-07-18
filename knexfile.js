@@ -7,7 +7,6 @@ module.exports = {
   development: {
     client: 'pg',
     connection: {
-      // filename: './dev.sqlite3',
       host : settings.hostname,
       user : settings.user,
       password : settings.password,

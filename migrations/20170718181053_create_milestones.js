@@ -1,7 +1,7 @@
 
 exports.up = function(knex, Promise) {
   return Promise.all([
-    knex.schema.createTable('milestones', function(table){
+    knex.schema.createTable('milestones', (table) => {
       table.integer('id').primary(); //PRIMARY KEY
       table.string('description');
       table.date('date_achieved');

@@ -2,12 +2,12 @@
 // as three command line arguments
 //and uses Knex to perform an insert.
 
-const settings = require ('./settings');
+const settings = require ("./settings");
 
-console.log('Adding ...');
+console.log("Adding ...");
 
-const knex = require('knex')({
-  client: 'pg',
+const knex = require("knex")({
+  client: "pg",
   connection: {
     host : settings.hostname,
     user : settings.user,
@@ -23,14 +23,14 @@ const inputValues = {
   birthdate: input[2]
 };
 
-knex('famous_people')
+knex("famous_people")
 .insert(inputValues)
 .asCallback((err, result) => {
   if (err){
     return console.error("error running query", err);
   }
-  console.log('Added!');
+  console.log("Added!");
   knex.destroy(()=>{
-    console.log('DESTROY, BYE');
+    console.log("DESTROY, BYE");
   });
 });
