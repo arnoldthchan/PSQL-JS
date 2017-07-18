@@ -1,4 +1,11 @@
+//takes in the first name, last name and date of a famous person
+// as three command line arguments
+//and uses Knex to perform an insert.
+
 const settings = require ('./settings');
+
+console.log('Adding ...');
+
 const knex = require('knex')({
   client: 'pg',
   connection: {
@@ -8,42 +15,22 @@ const knex = require('knex')({
     database : settings.database
   }
 });
-// const client = new pg.Client({
-//   user     : settings.user,
-//   password : settings.password,
-//   database : settings.database,
-//   host     : settings.hostname,
-//   port     : settings.port,
-//   ssl      : settings.ssl
-// });
 
-const input = process.argv[2];
-const query = "SELECT * FROM famous_people WHERE first_name = $1 OR last_name = $1";
+const input = process.argv.slice(2);
+const inputValues = {
+  first_name: input[0],
+  last_name: input[1],
+  birthdate: input[2]
+};
 
-// function outputEntry(entry){
-//   console.log(`Found ${entry.rows.length} person(s) by the name '${input}':`);
-//   console.log(`- ${entry.rows[0].id}: ${entry.rows[0].first_name} ${entry.rows[0].last_name}, born ${entry.rows[0].birthdate.toLocaleDateString()}`);
-// }
-
-console.log(input);
 knex('famous_people')
-.where('id', input)
+.insert(inputValues)
 .asCallback((err, result) => {
-  console.log(result);
+  if (err){
+    return console.error("error running query", err);
+  }
+  console.log('Added!');
+  knex.destroy(()=>{
+    console.log('DESTROY, BYE');
+  });
 });
-knex.destroy(()=>{
-  console.log('DESTROY, BYE');
-});
-// client.connect((err) => {
-//   if (err) {
-//     return console.error("Connection Error", err);
-//   }
-//   client.query(query, [input], (err, result) => {
-//     if (err) {
-//       return console.error("error running query", err);
-//     }
-//     console.log('Searching ...');
-//     outputEntry(result);
-//     client.end();
-//   });
-// });
